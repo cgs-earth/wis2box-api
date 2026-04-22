@@ -1,0 +1,14 @@
+services:
+  wis2box-api:
+    build: .
+    ports:
+      - "4000:80"
+    entrypoint: ["/app/docker/entrypoint.sh"]
+    platform: linux/amd64
+    environment:
+      - WIS2BOX_API_URL=http://localhost:4000
+      - WIS2BOX_API_BACKEND_URL=http://localhost:4000
+      
+      - WIS2BOX_LOGGING_LOGLEVEL=DEBUG
+      - WIS2BOX_BASEMAP_URL=https://tile.openstreetmap.org/{z}/{x}/{y}.png
+      - WIS2BOX_BASEMAP_ATTRIBUTION="&copy; <a href="https://openstreetmap.org/copyright">OpenStreetMap contributors</a>"

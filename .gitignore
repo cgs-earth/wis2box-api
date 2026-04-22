@@ -129,3 +129,10 @@ dmypy.json
 .pyre/
 docker_compose_test/tests/data/.ssh/id_rsa
 docker_compose_test/tests/data/.ssh/id_rsa.pub
+
+# Terraform
+*.tfstate
+*.tfstate.backup
+.terraform/
+terraform.tfvars
+opentofu/**.json
