@@ -57,25 +57,25 @@ metadata:
         url: ${WIS2BOX_LICENSE_URL:-https://www.apache.org/licenses/LICENSE-2.0}
 
 resources:
-    # station-info:
-    #     type: process
-    #     processor:
-    #         name: wis2box_api.plugins.process.station_info.StationInfoProcessor
+    station-info:
+        type: process
+        processor:
+            name: wis2box_api.plugins.process.station_info.StationInfoProcessor
 
-    # station-msg-info:
-    #     type: process
-    #     processor:
-    #         name: wis2box_api.plugins.process.station_msg_info.StationMsgInfoProcessor
+    station-msg-info:
+        type: process
+        processor:
+            name: wis2box_api.plugins.process.station_msg_info.StationMsgInfoProcessor
 
-    # dataset-info:
-    #     type: process
-    #     processor:
-    #         name: wis2box_api.plugins.process.dataset_info.DatasetInfoProcessor
+    dataset-info:
+        type: process
+        processor:
+            name: wis2box_api.plugins.process.dataset_info.DatasetInfoProcessor
     
-    # mappings-info:
-    #     type: process
-    #     processor:
-    #         name: wis2box_api.plugins.process.mappings_info.MappingsInfoProcessor
+    mappings-info:
+        type: process
+        processor:
+            name: wis2box_api.plugins.process.mappings_info.MappingsInfoProcessor
 
     pygeometa-metadata-generate:
         type: process
@@ -96,7 +96,7 @@ resources:
         type: process
         processor:
             name: pywcmp.pygeoapi_plugin.WCMP2ETSProcessor
-
+    
     pywcmp-wis2-wcmp2-kpi:
         type: process
         processor:
@@ -133,26 +133,83 @@ resources:
             name: wis2box_api.plugins.process.unpublish_dataset.UnpublishDatasetProcessor
 
     wis2box-synop2bufr:
-      type: process
-      processor:
-        name: wis2box_api.plugins.process.synop2bufr.SynopPublishProcessor
+        type: process
+        processor:
+            name: wis2box_api.plugins.process.synop2bufr.SynopPublishProcessor
 
     wis2box-csv2bufr:
-      type: process
-      processor:
-        name: wis2box_api.plugins.process.csv2bufr.CSVPublishProcessor
+        type: process
+        processor:
+            name: wis2box_api.plugins.process.csv2bufr.CSVPublishProcessor
 
     wis2box-bufr2bufr:
-      type: process
-      processor:
-        name: wis2box_api.plugins.process.bufr2bufr.BufrPublishProcessor
+        type: process
+        processor:
+            name: wis2box_api.plugins.process.bufr2bufr.BufrPublishProcessor
 
     wis2box-publish_data:
-      type: process
-      processor:
-        name: wis2box_api.plugins.process.universal_data.UniversalDataPublishProcessor
+        type: process
+        processor:
+            name: wis2box_api.plugins.process.universal_data.UniversalDataPublishProcessor
 
     wis2box-storage-event:
-      type: process
-      processor:
-        name: wis2box_api.plugins.process.storage_event.StorageEventProcessor
+        type: process
+        processor:
+            name: wis2box_api.plugins.process.storage_event.StorageEventProcessor
+
+    discovery-metadata:
+        type: collection
+        title: Discovery metadata
+        description: Discovery metadata
+        keywords: &kwds
+          - wmo
+          - wis 2.0
+        extents: &extents
+            spatial:
+                bbox: [-180, -90, 180, 90]
+                crs: http://www.opengis.net/def/crs/OGC/1.3/CRS84
+        links: &links
+          - type: text/html
+            rel: canonical
+            title: information
+            href: https://example.org
+        providers:
+          - type: record
+            name: ElasticsearchCatalogue
+            data: ${WIS2BOX_API_BACKEND_URL}/discovery-metadata
+            editable: ${WIS2BOX_EDITABLE_COLLECTIONS:-false}
+            id_field: identifier
+            time_field: created
+            title_field: title
+
+    stations:
+        type: collection
+        title: Stations
+        description: Stations
+        keywords: *kwds
+        extents: *extents
+        links: *links
+        providers:
+          - type: feature
+            name: Elasticsearch
+            data: ${WIS2BOX_API_BACKEND_URL}/stations
+            editable: ${WIS2BOX_EDITABLE_COLLECTIONS:-false}
+            id_field: wigos_station_identifier
+            title_field: wigos_station_identifier
+
+    messages:
+        type: collection
+        title: Data notifications
+        description: Data notifications
+        keywords: *kwds
+        extents: *extents
+        links: *links
+        providers:
+          - type: feature
+            name: Elasticsearch
+            data: ${WIS2BOX_API_BACKEND_URL}/stations
+            editable: ${WIS2BOX_EDITABLE_COLLECTIONS:-false}
+            id_field: id
+            time_field: pubtime
+            title_field: id
+

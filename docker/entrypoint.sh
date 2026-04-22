@@ -51,7 +51,7 @@ mkdir -p /data/wis2box/mappings
 cd /wis2box-api
 
 echo "Trying to generate OpenAPI document"
-/venv/bin/pygeoapi openapi generate ${PYGEOAPI_CONFIG} --output-file ${PYGEOAPI_OPENAPI}
+/venv/bin/pygeoapi openapi generate ${PYGEOAPI_CONFIG} --output-file ${PYGEOAPI_OPENAPI} --no-fail-on-invalid-collection
 
 [[ $? -ne 0 ]] && error "ERROR: OpenAPI document could not be generated"
 
