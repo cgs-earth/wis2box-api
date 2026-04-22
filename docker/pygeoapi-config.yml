@@ -57,25 +57,25 @@ metadata:
         url: ${WIS2BOX_LICENSE_URL:-https://www.apache.org/licenses/LICENSE-2.0}
 
 resources:
-    station-info:
-        type: process
-        processor:
-            name: wis2box_api.plugins.process.station_info.StationInfoProcessor
+    # station-info:
+    #     type: process
+    #     processor:
+    #         name: wis2box_api.plugins.process.station_info.StationInfoProcessor
 
-    station-msg-info:
-        type: process
-        processor:
-            name: wis2box_api.plugins.process.station_msg_info.StationMsgInfoProcessor
+    # station-msg-info:
+    #     type: process
+    #     processor:
+    #         name: wis2box_api.plugins.process.station_msg_info.StationMsgInfoProcessor
 
-    dataset-info:
-        type: process
-        processor:
-            name: wis2box_api.plugins.process.dataset_info.DatasetInfoProcessor
+    # dataset-info:
+    #     type: process
+    #     processor:
+    #         name: wis2box_api.plugins.process.dataset_info.DatasetInfoProcessor
     
-    mappings-info:
-        type: process
-        processor:
-            name: wis2box_api.plugins.process.mappings_info.MappingsInfoProcessor
+    # mappings-info:
+    #     type: process
+    #     processor:
+    #         name: wis2box_api.plugins.process.mappings_info.MappingsInfoProcessor
 
     pygeometa-metadata-generate:
         type: process
