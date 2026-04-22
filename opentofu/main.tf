@@ -17,53 +17,35 @@ resource "google_project_service" "required_apis" {
   disable_on_destroy = false
 }
 
-resource "google_cloud_run_v2_service" "wis2box_api" {
+module "storage" {
   depends_on = [google_project_service.required_apis]
-  name                = "wis2box-api"
-  location            = var.region
-  deletion_protection = false
-
-  ingress = "INGRESS_TRAFFIC_ALL"
-
-  template {
-    service_account = var.service_account_email
-    scaling {
-      max_instance_count = 2
-      min_instance_count = 1
-    }
-
-    containers {
-      image = "wmoim/wis2box-api:${var.image_tag}"
-      ports {
-        container_port = 80
-      }
-
-      command = ["/app/docker/entrypoint.sh"]
-      env {
-        name  = "WIS2BOX_API_URL"
-        value = var.url
-      }
-
-      resources {
-        limits = {
-          cpu    = "2"
-          memory = "2Gi"
-        }
-        cpu_idle = false
-      }
-    }
-  }
-
-  traffic {
-    percent = 100
-    type    = "TRAFFIC_TARGET_ALLOCATION_TYPE_LATEST"
-  }
+  source = "./storage"
+  region = var.region
+  service_account_email = var.service_account_email
+  s3_bucket = "${var.project}-wis2box"
 }
 
-resource "google_cloud_run_v2_service_iam_member" "public_access" {
-  location = google_cloud_run_v2_service.wis2box_api.location
-  project  = google_cloud_run_v2_service.wis2box_api.project
-  name     = google_cloud_run_v2_service.wis2box_api.name
-  role     = "roles/run.invoker"
-  member   = "allUsers"
+module "elasticsearch" {
+  depends_on = [google_project_service.required_apis]
+  source = "./elasticsearch"
+  region = var.region
+}
+
+module "wis2box-api" {
+  depends_on = [google_project_service.required_apis]
+  source = "./wis2box-api"
+  region = var.region
+  service_account_email = var.service_account_email
+  url = var.url
+
+  # S3 configuration for WIS2BOX API
+  s3_storage_url = "https://storage.googleapis.com"
+  s3_bucket_incoming = module.storage.s3_bucket_incoming
+  s3_bucket_public = module.storage.s3_bucket_public
+  s3_access_key = module.storage.s3_access_key
+  s3_secret_key = module.storage.s3_secret_key
+
+  # Backend configuration
+  backend_url = module.elasticsearch.backend_url
+
 }

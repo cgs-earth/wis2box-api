@@ -13,13 +13,11 @@ variable "credentials" {
 variable "url" {
   description = "Base URL for the WIS2BOX API (used in environment variable)"
   type        = string
-  default     = "https://wis2box-api-671426036368.africa-south1.run.app"
 }
 
 variable "service_account_email" {
   description = "Email of the service account to run the Cloud Run service"
   type        = string
-  default     = "default"
 }
 
 variable "region" {

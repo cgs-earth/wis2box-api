@@ -24,6 +24,5 @@ output "api_endpoints" {
   description = "Important API endpoints"
   value = {
     base_url     = google_cloud_run_v2_service.wis2box_api.uri
-    api_root     = "${google_cloud_run_v2_service.wis2box_api.uri}/oapi"
   }
 }

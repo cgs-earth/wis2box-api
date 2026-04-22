@@ -1,7 +1,4 @@
-# terraform.tfvars.example
-# Example OpenTofu variables file for WIS2BOX API deployment
-# Copy this to terraform.tfvars and update with your values
-
-# Required variables
-region               = "us-central1"
-service_account_email = "your-service-account@your-project.iam.gserviceaccount.com"
+credentials           = 
+region                =
+service_account_email =
+url                   =
